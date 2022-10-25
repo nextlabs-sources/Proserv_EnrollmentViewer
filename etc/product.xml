@@ -1,0 +1,8 @@
+<!--[UTCCUSTOM_COMPONENT_BEGIN]-->
+        <Context path="/utc" reloadable="false" docBase="C:\Program Files\NextLabs\Policy Server\server\apps\UTCConfApp.war" workDir="C:\Program Files\NextLabs\Policy Server\server\tomcat\work\utc">
+            <Parameter name="ComponentName" value="KENT-VM_utc"/>
+            <Parameter name="Location" value="https://KENT-VM:443/utc"/>
+			<Parameter name="DMSLocation" value="https://KENT-VM:8443/dms"/>
+            <Parameter name="InstallHome" value="&install_home;"/>
+        </Context>
+<!--[UTCCUSTOM_COMPONENT_END]-->

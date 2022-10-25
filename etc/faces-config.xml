@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config>
+	<application>
+		<locale-config>
+			<default-locale>en_US</default-locale>
+		</locale-config>
+		<message-bundle>UTCConfMessages</message-bundle>
+		<default-render-kit-id>HTML_BASIC</default-render-kit-id>
+	</application>
+	
+	<managed-bean>
+		<description>Managed Bean containing pre-render actions associated with particular views</description>
+		<managed-bean-name>PrerenderActionManagerBean</managed-bean-name>
+		<managed-bean-class>com.bluejungle.destiny.webui.framework.faces.PrerenderActionManagerBean</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+		<managed-property>
+			<description>
+				Map of viewid to pre-render actions
+			</description>
+			<property-name>prerenderActions</property-name>
+			<map-entries>
+				<map-entry>
+					<key>/login/login.jsp</key>
+					<value>loginManager.prerender</value>
+				</map-entry>
+			</map-entries>
+		</managed-property>
+		<managed-property>
+			<description>
+				Error page to display if a prerender action throws an exception
+			</description>
+			<property-name>errorViewId</property-name>
+			<value>/error/errorDisplay.jsp</value>
+		</managed-property>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>envLookup</managed-bean-name>
+		<managed-bean-class>com.bluejungle.destiny.webui.framework.faces.EnvLookupBean</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+		<managed-property>
+			<property-name>keyName</property-name>
+			<value>DMSLocation</value>
+		</managed-property>		
+	</managed-bean>
+	
+	
+	<managed-bean>
+		<description>LoginBean</description>
+		<managed-bean-name>LoginBean</managed-bean-name>
+		<managed-bean-class>com.nextlabs.utc.conf.EnrollmentConfComponentImpl</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+		<managed-property>
+        <property-name>init</property-name>
+        <value>test</value>
+      	</managed-property>
+	</managed-bean>
+		
+	<!-- Global navigation rules for the application -->
+	<navigation-rule>
+	
+		<navigation-case>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/login/login.jsf</to-view-id>
+			<redirect/>
+		</navigation-case>		
+	</navigation-rule>	
+	
+	<!-- Login page navigation rules -->
+	<navigation-rule>
+		<from-view-id>/login/login.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>Success</from-outcome>
+			<to-view-id>/home.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>Failure</from-outcome>
+			<to-view-id>/login/login.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>	
+	
+	<validator>
+		<validator-id>NameStringValidator</validator-id>
+		<validator-class>com.nextlabs.destiny.webui.validators.NameStringValidator</validator-class>
+	</validator>
+	<validator>
+		<validator-id>AlphabetValidator</validator-id>
+		<validator-class>com.nextlabs.destiny.webui.validators.AlphabetValidator</validator-class>
+	</validator>
+</faces-config>

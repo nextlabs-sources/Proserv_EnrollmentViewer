@@ -1,0 +1,50 @@
+<project name="Config Manager Main Build" default="build">
+
+	<property name="src.dir"      value="${basedir}"/>
+	<property name="compile.source"      value="${basedir}"/>
+	<property name="build.root.dir" value="${basedir}/../build" />
+	<property name="doc.dest"   value="${build.root.dir}/EnrollmentManagerApp/doc"/>
+    <property name="build.dest"   value="${build.root.dir}/EnrollmentManagerApp/WEB-INF/classes"/>      
+	<property name="xlib_jar_dir"      value="${basedir}/../xlib/jar"/>
+	
+	<fileset id="destiny.jars" dir="${xlib_jar_dir}">
+		 <include name="*.jar"/>
+	</fileset>
+	
+	<path id="compile.classpath">
+        <fileset refid="destiny.jars"/>          
+	</path>
+		
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+	</target>
+	
+	<!--
+    <target name="doc">
+		<mkdir dir="${doc.dest}"/>
+    	<javadoc sourcepath="${src.dir}" destdir="${doc.dest}" linksource="yes" 
+    		classpathref="compile.utcconfapp.classpath" source="${compile.source}" >
+    		<packageset dir="${src.dir}" defaultexcludes="yes">
+    			<include name="**"/>
+    		</packageset>
+    	</javadoc>
+    </target>
+
+	
+	<target name="depend">
+			<depend srcDir="${src.dir}" destDir="${build.dest}" cache="${build.root.dir}/server/utcconfapp/depcache">
+				<classpath>
+					<fileset refid="destiny.jars" />
+				</classpath>
+			</depend>
+	</target>	
+	-->
+	<target name="compile">
+		<javac srcdir="${src.dir}" destdir="${build.dest}"  verbose="${compile.verbose}" target="1.6">
+			<classpath refid="compile.classpath"/>
+        </javac>
+	</target>
+	
+	<target name="build" depends="pre-build, compile">
+	</target>
+</project>

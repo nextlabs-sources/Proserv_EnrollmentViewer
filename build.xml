@@ -1,0 +1,175 @@
+<project name="Enrollment Viewer Application" default="build">
+
+    <property name="nlbuildroot" value="${basedir}/../" />
+
+    <property name="src.main.dir"   value="${basedir}/src"/>
+    <property name="src.test.dir"   value="${basedir}/src/test"/>   
+    <property name="src.jsp"      value="${basedir}/jsp"/>
+    <property name="src.jspf"      value="${basedir}/jspf"/>   
+    <property name="src.bundles"     value="${basedir}/bundles"/> 
+    <property name="src.hibernate" value="${basedir}/hibernate" />
+	<property name="build.root.dir" value="${basedir}/build" />
+	<property name="war.dir" value="${build.root.dir}/war" />
+    <property name="doc.dest"   value="${build.root.dir}/EnrollmentManagerApp/doc"/>
+    <property name="build.webapp" value="${build.root.dir}/EnrollmentManagerApp"/>
+    <property name="build.webinf" value="${build.webapp}/WEB-INF"/>
+    <property name="build.weblib" value="${build.webapp}/WEB-INF/lib"/>
+    <property name="build.webtld" value="${build.webapp}/WEB-INF/tld"/>
+    <property name="build.webconf" value="${build.webapp}/WEB-INF/conf"/>	
+	<property name="webapp.war.filename" value="EnrollmentViewer.war"/>
+    <property name="server.base.dir" value="${src.root.dir}/server/base/"/>
+	<property name="xlib_jar_dir"      value="${basedir}/xlib/jar"/>
+	<property name="web.framework.dir"      value="${basedir}"/>
+	<fileset id="destiny.jars" dir="${xlib_jar_dir}">
+		 <include name="*.jar"/>
+	</fileset>
+	
+	<fileset id="destiny.jars1" dir="${xlib_jar_dir}">
+		 <include name="*.jar"/>
+		<exclude name="server-base.jar"/>
+	</fileset>
+		 	 	
+	<path id="compile.classpath">
+		<fileset refid="destiny.jars"/>
+	    <pathelement path="${build.dest}"/>
+	</path>
+		
+	<target name="setup-datasources">
+		<!-- Copy datasource information -->
+		<!--copy file="${server.base.dir}/resource/main/common.repository.properties" todir="${build.webconf}" failonerror="true" verbose="true"/-->
+        <copy file="${src.hibernate}/activity.repository.xml" todir="${build.webconf}" failonerror="true" verbose="true"/>      
+        <copy file="${src.hibernate}/dictionary.repository.xml" todir="${build.webconf}" failonerror="true" verbose="true"/>            
+        <copy file="${src.hibernate}/management.repository.xml" todir="${build.webconf}" failonerror="true" verbose="true"/>
+		<copy file="${src.hibernate}/policyframework.repository.xml" todir="${build.webconf}" failonerror="true" verbose="true"/>
+		<copy file="${src.hibernate}/common.repository.properties" todir="${build.webconf}" failonerror="true" verbose="true"/>
+		<copy file="${src.hibernate}/hibernate.cfg.xml" todir="${build.webinf}/classes" failonerror="true" verbose="true"/>
+		<copy file="${src.hibernate}/CountryMasterMapping.hbm.xml" todir="${build.webinf}/classes/com/nextlabs/utc/conf/hibernate/" failonerror="true" verbose="true"/>
+		<copy file="${src.hibernate}/CCLCountryMapping.hbm.xml" todir="${build.webinf}/classes/com/nextlabs/utc/conf/hibernate/" failonerror="true" verbose="true"/>
+		<copy file="${src.hibernate}/IpcountryMapping.hbm.xml" todir="${build.webinf}/classes/com/nextlabs/utc/conf/hibernate/" failonerror="true" verbose="true"/>
+	</target>
+	
+	<target name="setup-webapp" depends="setup-datasources">
+		<mkdir dir="${build.weblib}"/>
+
+		<!-- Copy the basic web framework files -->
+		<copy toDir="${build.weblib}" failonerror="true" verbose="true">
+			<fileset refid="destiny.jars1"/>
+		</copy>
+        <!--
+		<copy file="${xlib_jar_dir}/jstl.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>
+		<copy todir="${build.weblib}" failonerror="true" verbose="true">
+			<fileset dir="${build.root.dir}">
+				<include name="agent-manager.jar"/>
+				<include name="app-framework.jar"/>
+				<include name="client-security-config.jar"/>
+				<include name="common-dictionary.jar"/>
+				<include name="common-domain.jar"/>
+				<include name="common-framework.jar"/> 
+				<include name="common-pf.jar"/> 
+				<include name="common-version-impl.jar"/>
+				<include name="common-versionfactory.jar"/>
+				<include name="crypt.jar"/>
+				<include name="dabs-dcc-services.jar"/> 
+				<include name="dms-services.jar"/>
+				<include name="inquiry-manager-shared.jar"/> 
+				<include name="messages.jar"/>
+				<include name="policy-deploy-manager.jar"/>
+				<include name="policy-services.jar"/>
+				<include name="profile-manager.jar" />
+				<include name="secure-session.jar" />
+				<include name="server-datasource.jar"/>
+				<include name="server-dcsf.jar"/> 
+				<include name="server-dictionary.jar"/>
+				<include name="server-framework.jar"/>
+				<include name="server-pf.jar"/>
+				<include name="server-shared-applicationusers.jar"/>
+				<include name="server-shared-services.jar"/>
+				<include name="server-shared-services.jar"/>
+				<include name="server-shared-utils.jar"/>
+				<include name="storedResults-shared.jar"/>
+				<include name="version.jar"/>
+				<include name="version-types.jar"/>
+				<include name="web-framework.jar"/>
+			</fileset>
+		</copy>
+
+        <copy file="${xlib_jar_dir}/mail.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>
+		<copy file="${xlib_jar_dir}/activation.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>	
+		<copy file="${xlib_jar_dir}/dcsf-types.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>
+        <copy file="${xlib_jar_dir}/management-types.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>
+        <copy file="${xlib_jar_dir}/common-domain-types.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>   
+        <copy file="${xlib_jar_dir}/common-dictionary.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>   
+        <copy file="${xlib_jar_dir}/server-dictionary.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>   
+        <copy file="${xlib_jar_dir}/common-framework-types.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>       
+		<copy file="${xlib_jar_dir}/deployment-types.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>
+		<copy file="${xlib_jar_dir}/agent-types.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>
+		<copy file="${xlib_jar_dir}/log-types.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>
+        <copy file="${xlib_jar_dir}/policy-types.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>
+        <copy file="${xlib_jar_dir}/server-axis-security.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>     
+		<copy file="${xlib_jar_dir}/server-shared-types.jar" todir="${build.weblib}" failonerror="true" verbose="true"/> 
+		<copy file="${xlib_jar_dir}/server-shared-utils.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>
+        <copy file="${xlib_jar_dir}/ldap.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>
+		<copy file="${xlib_jar_dir}/sqljdbc4.jar" todir="${build.weblib}" failonerror="true" verbose="true"/>
+  		-->		
+		
+        <!-- Copy configuration files -->
+        <copy file="${web.framework.dir}/etc/web.xml" todir="${build.webinf}" failonerror="true" verbose="true"/>
+        <copy file="${web.framework.dir}/etc/client-config.wsdd" todir="${build.webinf}" failonerror="false" verbose="true"/>
+        <copy file="${web.framework.dir}/etc/faces-config.xml" todir="${build.webinf}" failonerror="true" verbose="true"/>
+		<copy file="${web.framework.dir}/etc/core-tiles-defs.xml" todir="${build.webinf}" failonerror="true" verbose="true"/>
+        <copy file="${web.framework.dir}/etc/utc-conf-tiles-defs.xml" todir="${build.webinf}" failonerror="true" verbose="true"/>
+        
+        <!-- Copy resource files (For messages) -->
+        <copy file="${src.bundles}/UTCConfMessages.properties" todir="${build.webinf}/classes" verbose="true"/>
+		<copy file="${src.bundles}/commons.properties" todir="${build.webinf}/classes/com/nextlabs/utc/conf/properties" verbose="true"/>
+		
+		
+		<!-- Copy common CSS, JPS and JS files -->
+		<copy todir="${build.webapp}" failonerror="false" verbose="true">
+			<fileset dir="${web.framework.dir}/web">
+                <exclude name="**/jspf/**/*"/>            
+                <exclude name="**/jspf"/>                 
+            </fileset>            
+		</copy>		
+  
+        <!-- Copy common JSP fragments, JSPF -->
+        <copy todir="${build.webinf}/jspf/core" failonerror="true" verbose="true">
+            <fileset dir="${web.framework.dir}/web/core/jspf/" />
+        </copy>
+        <copy todir="${build.webinf}/jspf" verbose="true">
+            <fileset dir="${src.jspf}"/>
+        </copy>
+		
+		<!-- Copy TLDs, Tag Libraries -->			
+		<copy file="${web.framework.dir}/tld/c.tld" todir="${build.webinf}/tld" verbose="true"/> 
+		<copy file="${web.framework.dir}/tld/tags.tld" todir="${build.webinf}/" verbose="true"/> 
+		
+        <!-- Copy JSP pages -->
+        <copy todir="${build.webapp}" verbose="true">
+            <fileset dir="${src.jsp}"/>
+        </copy>
+  
+        <!-- Copy files for login -->
+        <copy file="${web.framework.dir}/web/core/javascript/core.js" todir="${build.webapp}/login/javascript/" verbose="true"/>                  
+		<copy file="${web.framework.dir}/web/core/css/login.css" todir="${build.webapp}/login/css/" verbose="true"/>
+		<copy file="${web.framework.dir}/web/core/images/login_administrator.jpg" tofile="${build.webapp}/login/images/login.jpg" verbose="true"/>
+		<copy file="${web.framework.dir}/web/core/images/CE_brandingBkgLogin.gif" tofile="${build.webapp}/login/images/CE_brandingBkgLogin.gif" verbose="true"/>
+		<copy file="${web.framework.dir}/web/core/images/CE_logotypeLogin.gif" tofile="${build.webapp}/login/images/CE_logotypeLogin.gif" verbose="true"/>
+		
+	</target>
+		
+	<target name="setup-war" depends="setup-webapp">
+		<war destfile="${war.dir}/${webapp.war.filename}" 
+			basedir="${build.webapp}" 
+			webxml="${build.webapp}/WEB-INF/web.xml" 
+			excludes="genclasses/**/*.*, WEB-INF/testclasses/**/*.*, ${webapp.war.filename}"
+		/>
+	</target>
+	
+	<target name="build-main">
+        <ant dir="${src.main.dir}" target="build" inheritrefs="true"/>
+	</target>
+   
+	<target name="build" depends="build-main, setup-webapp, setup-war">
+	</target>
+</project>

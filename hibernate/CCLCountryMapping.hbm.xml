@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.utc.conf.hibernate">
+	<class name="CCLCountry" table="CCLCountries">
+     <id name="cclid" type="int">
+            <column name="cclid" />
+            <generator class="increment" />
+        </id>
+			<property name="jurisdiction">
+			<column name="Jurisdiction" />
+		</property>
+		<property name="classification">
+			<column name="Classification" />
+		</property>
+		<property name="countryCode">
+			<column name="CountryCode" />
+		</property>
+		<property name="reasonForControl">
+			<column name="ReasonForControl" />
+		</property>
+		<property name="cCLFlag">
+			<column name="CCLFlag" />
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,286 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+
+	<display-name>Enrollment Viewer</display-name>
+	<description>Enrollment Viewer WebApp</description>
+
+	<listener>
+		<listener-class>com.nextlabs.utc.conf.EnrollmentConfContextListener</listener-class>
+	</listener>
+
+	<!-- Work Around for Tomcat 5.5/JSF Implementation issue -->
+	<listener>
+		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>ComponentClass</param-name>
+		<param-value>com.nextlabs.utc.conf.EnrollmentConfComponentImpl</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>server</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>com.sun.faces.validateXml</param-name>
+		<param-value>true</param-value>
+
+	</context-param>
+
+
+	<!-- PENDING: set to false because demo-components.jar has components that 
+		can only be created in the context of a current request. -->
+
+
+
+
+
+
+	<listener>
+		<listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>Logout Filter</filter-name>
+		<filter-class>com.bluejungle.destiny.webui.framework.filters.LogoutFilter</filter-class>
+		<init-param>
+			<param-name>loginUrl</param-name>
+			<param-value>${server.name}/enrollment/</param-value>
+		</init-param>
+		<init-param>
+			<param-name>casServerLoginUrl</param-name>
+			<param-value>${server.name}/cas/login?service=</param-value>
+		</init-param>
+		<init-param>
+			<param-name>casServerLogoutUrl</param-name>
+			<param-value>${server.name}/cas/logout?service=</param-value>
+		</init-param>
+	</filter>
+
+
+
+	<filter>
+		<filter-name>CAS Single Sign Out Filter</filter-name>
+		<filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>
+		<init-param>
+			<param-name>casServerUrlPrefix</param-name>
+			<param-value>${server.name}/cas</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>CAS Authentication Filter</filter-name>
+		<filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>
+		<init-param>
+			<param-name>casServerLoginUrl</param-name>
+			<param-value>${server.name}/cas/login</param-value>
+		</init-param>
+		<init-param>
+			<param-name>serverName</param-name>
+			<param-value>${server.name}</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>CAS Validation Filter</filter-name>
+		<filter-class>org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter</filter-class>
+		<init-param>
+			<param-name>casServerUrlPrefix</param-name>
+			<param-value>${server.name}/cas</param-value>
+		</init-param>
+		<init-param>
+			<param-name>serverName</param-name>
+			<param-value>${server.name}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>redirectAfterValidation</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>useSession</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>CAS httpervletRequest Wrapper Filter</filter-name>
+		<filter-class>org.jasig.cas.client.util.HttpServletRequestWrapperFilter</filter-class>
+	</filter>
+
+	<filter>
+		<filter-name>CAS Assertion Thread Local Filter</filter-name>
+		<filter-class>org.jasig.cas.client.util.AssertionThreadLocalFilter</filter-class>
+	</filter>
+
+
+
+
+
+	<filter-mapping>
+		<filter-name>Logout Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<filter-mapping>
+		<filter-name>CAS Single Sign Out Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>CAS Authentication Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>CAS Validation Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>CAS httpervletRequest Wrapper Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>CAS Assertion Thread Local Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+
+
+
+
+
+
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<!-- Tiles Servlet Definition -->
+	<servlet>
+		<servlet-name>Tiles Servlet</servlet-name>
+		<servlet-class>org.apache.struts.tiles.TilesServlet</servlet-class>
+		<init-param>
+			<param-name>definitions-config</param-name>
+			<param-value>/WEB-INF/core-tiles-defs.xml, /WEB-INF/utc-conf-tiles-defs.xml</param-value>
+		</init-param>
+		<!-- Tiles Definitions Factory parameter. Specify if the definition factory 
+			is struts 1.1 module aware. This option is only meaningful with Struts1.1 
+			If true, there will be one factory per Struts module. If false, there will 
+			be one common factory shared by all modules. true : one factory per struts 
+			module false : one common factory for all modules -->
+
+		<init-param>
+			<param-name>moduleAware</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<!-- Tiles Definitions Factory parameter Specify if xml parser should validate 
+			the Tiles configuration file. true : validate. DTD should be specified in 
+			file header. false : no validation -->
+
+		<init-param>
+			<param-name>definitions-parser-validate</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
+		<!-- If set, specify the debug details level. 0 means no debug information 
+			is outputted. This parameter is taken into account by DefinitionUtil.createDefinitionsFactory. -->
+		<init-param>
+			<param-name>definitions-debug</param-name>
+			<param-value>integer</param-value>
+		</init-param>
+
+		<!-- Specify level of detail outputted by parser (digester). Default is 
+			0, meaning no details. This parameter is taken into account by xmlDefinition.I18nFactorySet. -->
+		<init-param>
+			<param-name>definitions-parser-details</param-name>
+			<param-value>int</param-value>
+		</init-param>
+
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>DictServlet</servlet-name>
+		<servlet-class>com.nextlabs.utc.servlet.DictServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DictServlet</servlet-name>
+		<url-pattern>/DictServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>LogOutServlet</servlet-name>
+		<servlet-class>com.nextlabs.utc.servlet.LogOutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LogOutServlet</servlet-name>
+		<url-pattern>/LogOutServlet</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list id="WelcomeFileList">
+		<welcome-file>home.jsp</welcome-file>
+
+	</welcome-file-list>
+
+
+	<servlet>
+		<servlet-name>ErrorServlet</servlet-name>
+		<servlet-class>com.bluejungle.destiny.servlet.ErrorServlet</servlet-class>
+		<init-param>
+			<param-name>errorDisplayURI</param-name>
+			<param-value>/error/errorDisplay.jsp</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+	<!-- <servlet-mapping> <servlet-name>jsp</servlet-name> <url-pattern>*.jspf</url-pattern> 
+		</servlet-mapping> -->
+
+	<servlet-mapping>
+		<servlet-name>ErrorServlet</servlet-name>
+		<url-pattern>/error</url-pattern>
+	</servlet-mapping>
+
+
+
+	<error-page>
+		<exception-type>java.lang.Exception</exception-type>
+		<location>/error</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error</location>
+	</error-page>
+
+
+	<jsp-config>
+		<taglib>
+			<taglib-uri>http://java.sun.com/jstl/core</taglib-uri>
+			<taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+		</taglib>
+
+
+		<taglib>
+			<taglib-uri>http://bluejungle.com/destiny/1.0</taglib-uri>
+			<taglib-location>/WEB-INF/tags.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+	<!-- Timeout for the web session -->
+	<session-config>
+		<session-timeout>10</session-timeout>
+	</session-config>
+</web-app>

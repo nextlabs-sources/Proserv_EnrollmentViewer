@@ -1,0 +1,9 @@
+VERSION_NUMBER:44220
+RELEASE_DATE:June  14th 2013
+
+June 14th 2013
+- Password encryption for BizAuthDatabase Passoword 
+
+
+June 7th 2013
+- Base Version release

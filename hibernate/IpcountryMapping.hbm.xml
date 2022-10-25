@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.utc.conf.hibernate">
+    <class name="IpcountryMapping" table="IPCountryMapping">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="cdir">
+            <column name="CDIR" />
+        </property>
+        <property name="countryCode">
+            <column name="CountryCode" />
+        </property>
+        <property name="type">
+            <column name="Type" />
+        </property>
+    </class>
+</hibernate-mapping>

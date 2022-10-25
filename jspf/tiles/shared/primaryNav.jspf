@@ -1,0 +1,16 @@
+<%@ page buffer="none" errorPage="/error" %>  <%-- No buffer required to included JSF pages.  Alternative to verbatim tags --%>
+
+<%@ taglib uri="http://bluejungle.com/destiny/1.0" prefix="d" %>
+<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
+<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+
+<%-- Load Resource Bundles --%>
+<f:loadBundle basename="UTCConfMessages" var="bundle" />
+
+<d:form id="prmNvFrm">
+<!-- 
+  <d:menu id="parimaryNavMenu" styleClass="tabs" selectedItemStyleClass="current">
+    <d:menuItem id="primaryNavMenu-statusOverview" viewIdPattern="/upload/" value="#{bundle.primary_nav_status_menu_item_label}" action="statusOverview" immediate="true" />
+  </d:menu>
+-->
+</d:form>

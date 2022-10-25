@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.utc.conf.hibernate">
+	<class name="CountryMaster" table="CountryMaster">
+     <id name="countryCode" type="string">
+            <column name="CountryCode" />
+            <generator class="assigned" />
+        </id>
+			<property name="name">
+			<column name="Name" />
+		</property>
+		<property name="shortName">
+			<column name="ShortName" />
+		</property>
+
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration//EN"
+       "http://jakarta.apache.org/struts/dtds/tiles-config.dtd">
+<tiles-definitions>
+	<definition name="mainDefinition" page="/WEB-INF/jspf/core/layout/mainLayout.jspf">
+		<put name="header" value="/WEB-INF/jspf/core/tiles/shared/header.jspf" />
+		<put name="contentHeader" value="/WEB-INF/jspf/core/tiles/shared/contentHeader.jspf" />
+		<put name="footer" value="/WEB-INF/jspf/core/tiles/shared/footer.jspf" />
+	</definition>
+	
+	<definition name="mainWithoutContentHeaderDefinition" page="/WEB-INF/jspf/core/layout/mainLayout.jspf">
+		<put name="header" value="/WEB-INF/jspf/core/tiles/shared/header.jspf" />
+		<put name="footer" value="/WEB-INF/jspf/core/tiles/shared/footer.jspf" />
+	</definition>
+	
+	<definition name="loginDefinition" page="/WEB-INF/jspf/core/layout/loginLayout.jspf">
+	</definition>
+
+	<definition name="errorDisplayDefinition" page="/WEB-INF/jspf/core/layout/errorDisplayLayout.jspf">
+	</definition>
+	
+</tiles-definitions>
